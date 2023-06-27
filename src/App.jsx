@@ -3,6 +3,14 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+function Header() {
+  return (
+    <header>
+      <h1>TRACKIT</h1>
+    </header>
+  );
+}
+
 function TransactionList() {
   const transactions = [
     { id: 1, description: 'Groceries', amount: -50 },
@@ -31,7 +39,13 @@ function TransactionList() {
 function App() {
   return (
     <div className="App">
+      <Header />
       <TransactionList />
+      <div className="buttons">
+        <button>Add Transaction</button>
+        <button>Remove Transaction</button>
+        <button>Edit Transaction</button>
+      </div>
     </div>
   );
 }
