@@ -1,72 +1,66 @@
-.App {
-  text-align: center;
+body{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: beige;
+}
+.budget-tracker {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: antiquewhite;
+}
+
+form {
   display: flex;
   flex-direction: column;
-  background-color: antiquewhite;
-  border: 3px solid black;
-  
-}
-#root{
-  margin: 0 auto;
-}
-
-
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 20px;
-}
-
-li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #f0f0f0;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  
-}
-
-.expense {
-  color: red;
-}
-
-.income {
-  color: green;
-}
-
-.header {
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
   margin-bottom: 20px;
 }
 
-.header h1 {
-  margin: 0;
+label {
+  margin-bottom: 10px;
 }
 
-.buttons {
-  margin-top: 20px;
+input{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 
-.buttons button {
-  padding: 10px 20px;
-  margin-right: 10px;
-  font-size: 16px;
+button {
+  padding: 8px 12px;
   background-color: #007bff;
-  color: #fff;
+  color: black;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.buttons button:hover {
-  background-color: #0056b3;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
-.buttons button:last-child {
-  margin-right: 0;
+th,
+td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.remove-button {
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
