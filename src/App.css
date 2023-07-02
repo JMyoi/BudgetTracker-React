@@ -33,9 +33,9 @@ body{
 }
 
 
+
 .TotalInfo{
   display:flex;
-  
 
 }
 #balance{
@@ -75,4 +75,19 @@ body{
 }
 #Display:hover{
   background-color: blanchedalmond;
+}
+.TransactionBtn{
+  margin: 10px 10px;
+}
+.AddTransactionBtn{
+  font-size: 20px;
+  border-radius: 12px;
+  margin:20px 0px 0px 0px;
+}
+.AddTransactionBtn:hover{
+  background-color:aquamarine;
+}
+.editBtns{
+  display:flex;
+  flex-direction:column;
 }

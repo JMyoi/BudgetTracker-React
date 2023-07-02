@@ -17,11 +17,21 @@ function TotalInfo(){
     </div>
   </div>);
 }
+// function BudgetTracker(){
+//   const[transactionInputs, setTransactionInputs] = useState([]); 
+//   return (
+//     <TotalInfo transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
+//     <Form transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
+//     <TableContent transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
+
+//   )
+// }
  
 
 function Form(){
   //this state holds an array of objects with transaction, data, and amount keys.
 const[transactionInputs, setTransactionInputs] = useState([]);  
+const[Open, setOpen] = useState(false);
 
   function handleSubmit(e){
     e.preventDefault();
@@ -39,35 +49,58 @@ const[transactionInputs, setTransactionInputs] = useState([]);
 
     } 
 
-
-  return(
-    <>
-    <form onSubmit = {handleSubmit} className = "AddTransactionForm" >
-    <label htmlFor ="dateInput" >Date: </label>
-      <input id = "dateInput" type="date" required/>
-    <label htmlFor = "descriptionInput"> Description: </label>
-      <input id = "descriptionInput" type="text" required placeholder='Description of Transaction'/>
-    <label htmlFor="categoryInput">Category: </label>
-      <input id = 'categoryInput' type='text' required placeholder = 'ex.rent'/>
-    <label htmlFor = "amountInput">Amount: </label>
-      <input id ="amountInput" type="number" required placeholder = '- for spendings and + for earnings'/>
-    <input type="submit" />
-    </form>
-
-    <TableContent transactionInputs = {transactionInputs}/>
-    </>
-  )
-
+    if(Open){
+      return(
+        <>
+        <form onSubmit = {handleSubmit} className = "AddTransactionForm" >
+        <label htmlFor ="dateInput" >Date: </label>
+          <input id = "dateInput" type="date" required/>
+        <label htmlFor = "descriptionInput"> Description: </label>
+          <input id = "descriptionInput" type="text" required placeholder='Description of Transaction'/>
+        <label htmlFor="categoryInput">Category: </label>
+          <input id = 'categoryInput' type='text' required placeholder = 'ex.rent'/>
+        <label htmlFor = "amountInput">Amount: </label>
+          <input id ="amountInput" type="number" required placeholder = '- for spendings and + for earnings'/>
+          <div className = "TransactionBtn">
+          <button type = "button" onClick = {()=>setOpen(false)}>Cancel</button>
+          <input type="submit" value = "Save"/>
+          </div>
+        </form>
+    
+        <TableContent transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
+        </>
+      );
+    }else{
+      return(
+        <>
+          <button type = "button" onClick = {()=>setOpen(true)} className = 'AddTransactionBtn'>Add Transaction</button>
+          <TableContent transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
+        </>
+      );
+    }
 }
 
 
-function TableContent({transactionInputs}){
+
+
+function TableContent({transactionInputs, setTransactionInputs }){
+
+function handleRemove(){
+  setTransactionInputs(
+      transactionInputs.filter(
+        transactions=>{
+          transactions!==transactionsInputs;
+        })
+  );
+}
+
   return (
     <>
     <div>
       <table id = "TableContent">
         <thead>
           <tr id = "headerRow">
+            <th className = "tableHeader">Edit</th>
             <th className = "tableHeader">Date</th>
             <th className = "tableHeader">Description</th>
             <th className = "tableHeader">Category</th>
@@ -79,16 +112,26 @@ function TableContent({transactionInputs}){
           {transactionInputs.map(
             (Inputs, i)=>{
               return(
+                <>
                 <tr className = "inputRow" key = {i}>
+                  <div className = "editBtns">
+                  <button type = "RemoveButton" onClick={()=>{
+                    setTransactionInputs(
+                      transactionInputs.filter(transactions=>transactions.))
+                  }}> Remove </button>
+                  <button type = "EditButton" >Edit</button>
+                  </div>
                   <td className = "tableData">{Inputs.date} </td>
                   <td className = "tableData">{Inputs.description} </td>
                   <td className = "tableData">{Inputs.category}</td>
                   <td className = "tableData">{Inputs.amount}</td>
                 </tr>
+                </>
                 )
               }
             )
           }
+
         </tbody>
       </table>  
     </div>

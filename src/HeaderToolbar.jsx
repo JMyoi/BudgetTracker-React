@@ -12,9 +12,10 @@ function FilterBy(){
         <form>
           <label htmlFor="Filterby">Filter by: </label>
           <select  id="Filterby" defaultValue = "Both" onChange={handleFilter}>
-            <option value="Both">Both</option>
             <option value="Income">Income</option>
             <option value="Expense">Expense</option>
+            <option value = "Category">Category</option>
+            <option value="Both">Both</option>
           </select>
         </form>
         <p>Selected: {FilterType===''? 'Nothing' : FilterType }</p>
@@ -35,8 +36,8 @@ function FilterBy(){
                 <label htmlFor="SortBy">Sort by:</label>
                     <select  id="SortBy" defaultValue = "None" onChange = {handleSort}>
                         <option value="Date">Date</option>
-                        <option value="None" >None</option>
                         <option value="Price" >Price</option>
+                        <option value="None" >None</option>
                     </select>
             </form>
             <p>Selected: {SortType===''?'Nothing':SortType}</p>
