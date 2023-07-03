@@ -89,20 +89,12 @@ function RemoveButton({Inputs, transactions, setTransactions}){
     <button type = "button" onClick = {()=>(setTransactions(transactions.filter(
       transaction=>{
           return(
-            transaction.date!==Inputs.date ||
-            transaction.description!== Inputs.description ||
-            transaction.category!==Inputs.category ||
-            transaction.amount!==Inputs.amount 
-            //transaction.id!==Inputs.id
+            transaction.id!==Inputs.id
           )
     } )))}>Remove This and all duplicates</button>
       </td>
   );
 } 
-
-function removeById(){
-
-}
 
 function Note(){
   const[show, setShow] = useState(false);
@@ -143,20 +135,14 @@ function TableContent({transactions, setTransactions }){
                 <>
                 <tr className = "inputRow" key = {transactionData.id}>
                   
-                  {/*this button removes only that transaction by comparing index*/}
-                  <td className = "editBtns">
-                      <button type = "button" onClick = {()=>(
-                        setTransactions(transactions.filter((transaction, index) => index !== i)))} >Remove
-                     </button>
-                  </td> 
                   <RemoveButton Inputs = {transactionData} transactions = {transactions} setTransactions = {setTransactions}/>
                   
                   <td className = "tableData">{transactionData.date} </td>
                   <td className = "tableData">{transactionData.description} </td>
                   <td className = "tableData">{transactionData.category}</td>
                   <td className = "tableData">{transactionData.amount}</td>
-                  <td className="tableData">Key:{transactionData.id}</td> {/* Display the key */}
                   <Note/>
+                  <td className="tableData">Key:{transactionData.id}</td> {/* Display the key for debugging purorses*/}
                 </tr>
                 </>
                 )
