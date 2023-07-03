@@ -1,6 +1,6 @@
 import './App.css'
 import {useState} from 'react'
-import{v4 as uuidv4} from 'uuid';
+import{v4 as uuidv4} from 'uuid'
 import HeaderToolbar from './HeaderToolbar'
 
 function TotalInfo(){
@@ -83,16 +83,14 @@ const[Open, setOpen] = useState(false);
 
 
 //this removes transactions that are the exact same.
-function RemoveButton({Inputs, transactions, setTransactions}){
+function RemoveButton({transactionData, transactions, setTransactions}){
   return(
-   <td className = "editBtns">
+   <div className = "editBtns">
     <button type = "button" onClick = {()=>(setTransactions(transactions.filter(
       transaction=>{
-          return(
-            transaction.id!==Inputs.id
-          )
-    } )))}>Remove This and all duplicates</button>
-      </td>
+          return(transaction.id!==transactionData.id)
+      })))}>Remove</button>
+   </div>
   );
 } 
 
@@ -101,7 +99,7 @@ function Note(){
   const[note, setNote] = useState('');
 
   function addNote(event){
-    setNote(event.target.value); 
+    setNote(event.target.value);
   }
 
   return (
@@ -109,6 +107,58 @@ function Note(){
     <button onClick = {()=>setShow(true)} ><img className = "NoteButton" src="src/images/speechbubble.png" alt="speech bubble" /></button>
     {show?  <><textarea value = {note} onChange={addNote} onBlur={()=>setShow(false)}/> <button onClick={()=>setShow(false)}>X</button> </> : <></>}
     </td>
+  );
+}
+
+function EditButton({transactionData, transactions, setTransactions}){
+  const[showForm, setShowForm]= useState(false);
+
+  function handleEditSubmit(event){
+    setTransactions(transactions.map(
+      transaction=>{
+        if(transaction.id===transactionData.id){
+          const NewTransaction = {
+            date: event.target.dateinput.value,
+            description: event.target.descriptioninput.value,
+            category: event.target.categoryinput.value,
+            amount: event.target.amountinput.value,
+            id: transaction.id
+          }
+          return NewTransaction;
+        }
+        else{
+          return transaction;
+        }
+      }
+    ));
+    setShowForm(false);
+  }
+
+
+  function FormCondition(){
+    return(
+      <form className = "AddTransactionForm" onSubmit = {handleEditSubmit} >
+      <label htmlFor ="dateinput" >Date: </label>
+        <input id = "dateinput" type="date" required />
+      <label htmlFor = "descriptioninput"> Description: </label>
+        <input id = "descriptioninput" type="text" required />
+      <label htmlFor="categoryinput">Category: </label>
+        <input id = 'categoryinput' type='text' required />
+      <label htmlFor = "amountinput">Amount: </label>
+        <input id ="amountinput" type="number" required />
+        <div className = "TransactionBtn">
+        <button type = "button" onClick = {()=>setShowForm(false)}>Cancel</button>
+        <input type="submit" value = "Save" />
+        </div>
+      </form>
+      );
+  }
+
+  return(
+    <>
+    <button onClick = {()=>setShowForm(true)}>Edit</button>
+    {showForm && <FormCondition/>}
+    </>
   );
 }
 
@@ -130,13 +180,14 @@ function TableContent({transactions, setTransactions }){
 
         <tbody id = "dataBody">
           {transactions.map(
-            (transactionData, i)=>{
+            (transactionData)=>{
               return(
                 <>
                 <tr className = "inputRow" key = {transactionData.id}>
-                  
-                  <RemoveButton Inputs = {transactionData} transactions = {transactions} setTransactions = {setTransactions}/>
-                  
+                  <td>
+                  <RemoveButton transactionData = {transactionData} transactions = {transactions} setTransactions = {setTransactions}/>
+                  <EditButton transactionData = {transactionData} transactions = {transactions} setTransactions = {setTransactions}/>
+                  </td>
                   <td className = "tableData">{transactionData.date} </td>
                   <td className = "tableData">{transactionData.description} </td>
                   <td className = "tableData">{transactionData.category}</td>
