@@ -17,33 +17,36 @@ function TotalInfo(){
     </div>
   </div>);
 }
-// function BudgetTracker(){
-//   const[transactionInputs, setTransactionInputs] = useState([]); 
-//   return (
-//     <TotalInfo transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
-//     <Form transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
-//     <TableContent transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
 
-//   )
-// }
+
+function BudgetTracker(){
+   //this state holds an array of objects with transaction, data, and amount keys.
+  const[transactions, setTransactions] = useState([]); 
+  return (
+    <>
+    <TotalInfo />
+    <HeaderToolbar />
+    <Form transactions = {transactions} setTransactions = {setTransactions}/>
+    <TableContent transactions = {transactions} setTransactions = {setTransactions}/>
+    </>
+  )
+}
  
 
-function Form(){
-  //this state holds an array of objects with transaction, data, and amount keys.
-const[transactionInputs, setTransactionInputs] = useState([]);  
+function Form({transactions, setTransactions }){
+
 const[Open, setOpen] = useState(false);
 
   function handleSubmit(e){
     e.preventDefault();
-      setTransactionInputs(
+    setTransactions(
         [{
           date: e.target.dateInput.value,
           description: e.target.descriptionInput.value,
           category: e.target.categoryInput.value,
           amount: e.target.amountInput.value
 
-        },
-        ...transactionInputs]
+        }, ...transactions]
         //form.reset(); if you want the form to reset.
       );
 
@@ -66,15 +69,14 @@ const[Open, setOpen] = useState(false);
           <input type="submit" value = "Save"/>
           </div>
         </form>
-    
-        <TableContent transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
+        {/* TableContent transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/> */}
         </>
       );
     }else{
       return(
         <>
           <button type = "button" onClick = {()=>setOpen(true)} className = 'AddTransactionBtn'>Add Transaction</button>
-          <TableContent transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/>
+          {/* <TableContent transactionInputs = {transactionInputs} setTransactionInputs={setTransactionInputs}/> */}
         </>
       );
     }
@@ -83,16 +85,51 @@ const[Open, setOpen] = useState(false);
 
 
 
-function TableContent({transactionInputs, setTransactionInputs }){
+function TableContent({transactions, setTransactions }){
 
-function handleRemove(){
-  setTransactionInputs(
-      transactionInputs.filter(
-        transactions=>{
-          transactions!==transactionsInputs;
-        })
+// function handleRemove({inputs}){
+//   setTransactions(
+//     transactions.filter(
+//         transaction=>{
+//          return(transaction.date!==inputs.date &&
+//           transaction.description!== inputs.description &&
+//           transaction.category!==inputs.category &&
+//           transaction.amount!==inputs.amount)
+//         })
+//   );
+// }
+
+
+//this removes transactions that are the exact same.
+//try transaction!==Inputs
+function RemoveButton({Inputs}){
+  
+  return(
+   <td className = "editBtns">
+    <button type = "button" onClick = {()=>(setTransactions(transactions.filter(
+      transaction=>{
+          return(
+            transaction.date!==Inputs.date ||
+            transaction.description!== Inputs.description ||
+            transaction.category!==Inputs.category ||
+            transaction.amount!==Inputs.amount 
+          )
+    } )))}>Remove</button>
+      <button type = "button" >Edit</button>
+      </td>
   );
-}
+} 
+
+
+// function RemoveByKeyButton({key}){
+//   return(
+//     <td className = "editBtns">
+//       <button type = "button" onClick = {()=>(
+//          setTransactions(transactions.filter((index) => index !== key)))} >Remove This</button>
+//     </td> 
+//   );
+// }
+
 
   return (
     <>
@@ -109,22 +146,23 @@ function handleRemove(){
         </thead>
 
         <tbody id = "dataBody">
-          {transactionInputs.map(
+          {transactions.map(
             (Inputs, i)=>{
               return(
                 <>
                 <tr className = "inputRow" key = {i}>
-                  <div className = "editBtns">
-                  <button type = "RemoveButton" onClick={()=>{
-                    setTransactionInputs(
-                      transactionInputs.filter(transactions=>transactions.))
-                  }}> Remove </button>
-                  <button type = "EditButton" >Edit</button>
-                  </div>
+                  <RemoveButton Inputs = {Inputs}/>
+                  <td className = "editBtns">
+                      <button type = "button" onClick = {()=>(
+                        setTransactions(transactions.filter((transaction, index) => index !== i)))} >Remove
+                     </button>
+                  </td> 
+
                   <td className = "tableData">{Inputs.date} </td>
                   <td className = "tableData">{Inputs.description} </td>
                   <td className = "tableData">{Inputs.category}</td>
                   <td className = "tableData">{Inputs.amount}</td>
+                  <td className="tableData">Key:{i}</td> {/* Display the key */}
                 </tr>
                 </>
                 )
@@ -138,7 +176,15 @@ function handleRemove(){
     </>
   )
 }
-
+/*          
+      <td className = "editBtns">
+                  <button type = "button" onClick = {()=>(
+                     setTransactions(
+                      transactions.filter((transaction, index) => index !== i)))} >Remove</button>
+                  <button type = "button" >Edit</button>
+                  </td> 
+                  
+*/
 
 
 
@@ -146,9 +192,7 @@ function handleRemove(){
 export default function App() {
   return (
     <div id='Page'>
-    <TotalInfo/>
-    <HeaderToolbar/>
-    <Form/>
+    <BudgetTracker/>
     </div>
   );
 }
