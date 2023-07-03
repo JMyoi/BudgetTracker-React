@@ -1,5 +1,6 @@
 import './App.css'
 import {useState} from 'react'
+import{v4 as uuidv4} from 'uuid';
 import HeaderToolbar from './HeaderToolbar'
 
 function TotalInfo(){
@@ -45,7 +46,7 @@ const[Open, setOpen] = useState(false);
           description: e.target.descriptionInput.value,
           category: e.target.categoryInput.value,
           amount: e.target.amountInput.value,
-          note:""
+          id: uuidv4()
         }, ...transactions]
         //form.reset(); if you want the form to reset.
       );
@@ -92,29 +93,32 @@ function RemoveButton({Inputs, transactions, setTransactions}){
             transaction.description!== Inputs.description ||
             transaction.category!==Inputs.category ||
             transaction.amount!==Inputs.amount 
+            //transaction.id!==Inputs.id
           )
     } )))}>Remove This and all duplicates</button>
-      <button type = "button" >Edit</button>
       </td>
   );
 } 
 
-function Note({transactions, setTransactions}){
+function removeById(){
+
+}
+
+function Note(){
   const[show, setShow] = useState(false);
   const[note, setNote] = useState('');
 
-  function addNote(){
-    setNote()
+  function addNote(event){
+    setNote(event.target.value); 
   }
 
   return (
-    <>
+    <td>
     <button onClick = {()=>setShow(true)} ><img className = "NoteButton" src="src/images/speechbubble.png" alt="speech bubble" /></button>
-    {show?  <textarea value = {transactions.note} onChange={addNote}/>: <></>}
-    </>
+    {show?  <><textarea value = {note} onChange={addNote} onBlur={()=>setShow(false)}/> <button onClick={()=>setShow(false)}>X</button> </> : <></>}
+    </td>
   );
 }
-
 
 function TableContent({transactions, setTransactions }){
 
@@ -134,10 +138,10 @@ function TableContent({transactions, setTransactions }){
 
         <tbody id = "dataBody">
           {transactions.map(
-            (Inputs, i)=>{
+            (transactionData, i)=>{
               return(
                 <>
-                <tr className = "inputRow" key = {i}>
+                <tr className = "inputRow" key = {transactionData.id}>
                   
                   {/*this button removes only that transaction by comparing index*/}
                   <td className = "editBtns">
@@ -145,14 +149,14 @@ function TableContent({transactions, setTransactions }){
                         setTransactions(transactions.filter((transaction, index) => index !== i)))} >Remove
                      </button>
                   </td> 
-                  <RemoveButton Inputs = {Inputs} transactions = {transactions} setTransactions = {setTransactions}/>
-
-                  <td className = "tableData">{Inputs.date} </td>
-                  <td className = "tableData">{Inputs.description} </td>
-                  <td className = "tableData">{Inputs.category}</td>
-                  <td className = "tableData">{Inputs.amount}</td>
-                  <td className="tableData">Key:{i}</td> {/* Display the key */}
-                  <Note transactions={transactions} setTransactions = {setTransactions} />
+                  <RemoveButton Inputs = {transactionData} transactions = {transactions} setTransactions = {setTransactions}/>
+                  
+                  <td className = "tableData">{transactionData.date} </td>
+                  <td className = "tableData">{transactionData.description} </td>
+                  <td className = "tableData">{transactionData.category}</td>
+                  <td className = "tableData">{transactionData.amount}</td>
+                  <td className="tableData">Key:{transactionData.id}</td> {/* Display the key */}
+                  <Note/>
                 </tr>
                 </>
                 )
@@ -179,4 +183,10 @@ export default function App() {
   );
 }
 
+/*
+now that we use uuid for unique id and keys we can add a note value to the transacitons objects
+we can add note by using hte unique id and changing the array
+we remove unique array elements by filtering out the id that should be removed.
+we can edit my using the unique id
 
+*/
