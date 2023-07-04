@@ -23,6 +23,7 @@ function TotalInfo(){
 function BudgetTracker(){
    //this state holds an array of objects with transaction, data, and amount keys.
   const[transactions, setTransactions] = useState([]); 
+
   return (
     <>
     <TotalInfo />
@@ -40,13 +41,16 @@ const[Open, setOpen] = useState(false);
 
   function handleSubmit(e){
     e.preventDefault();
+    //determine if the amount should be negative(expense) or positive(income)
+    let amt = (e.target.transactionType.value==="expense")? (-e.target.amountInput.value) : (+e.target.amountInput.value) ;
     setTransactions(
         [{
           date: e.target.dateInput.value,
           description: e.target.descriptionInput.value,
           category: e.target.categoryInput.value,
-          amount: e.target.amountInput.value,
-          id: uuidv4()
+          amount: amt,
+          type: e.target.transactionType.value,
+          id: uuidv4()//gives a unique id for all transactions by using the uuid
         }, ...transactions]
         //form.reset(); if you want the form to reset.
       );
@@ -60,13 +64,18 @@ const[Open, setOpen] = useState(false);
         <label htmlFor ="dateInput" >Date: </label>
           <input id = "dateInput" type="date" required/>
         <label htmlFor = "descriptionInput"> Description: </label>
-          <input id = "descriptionInput" type="text" required placeholder='Description of Transaction'/>
+          <input id = "descriptionInput" type="text" required placeholder='ex.water'/>
         <label htmlFor="categoryInput">Category: </label>
-          <input id = 'categoryInput' type='text' required placeholder = 'ex.rent'/>
+          <input id = 'categoryInput' type='text' required placeholder = 'ex.groceries'/>
         <label htmlFor = "amountInput">Amount: </label>
-          <input id ="amountInput" type="number" required placeholder = '- for spendings and + for earnings'/>
+          <input id ="amountInput" type="number" required />
+          <input type = 'radio' value = 'expense' name = 'transactionType'/>{/*radio group must share the same name attribute so that when one is selected the others are unselected. You also refer to the name to get the selected value*/}
+        <label htmlFor="transactionType">expense </label>
+        <input type = 'radio' value = 'income' name = 'transactionType'/>
+        <label htmlFor="transactionType">income </label>
           <div className = "TransactionBtn">
           <button type = "button" onClick = {()=>setOpen(false)}>Cancel</button>
+          <button type = "reset"> Reset</button>
           <input type="submit" value = "Save"/>
           </div>
         </form>
@@ -96,6 +105,7 @@ function RemoveButton({transactionData, transactions, setTransactions}){
 
 function Note(){
   const[show, setShow] = useState(false);
+  const[showPreview, setShowPreview] = useState(false);
   const[note, setNote] = useState('');
 
   function addNote(event){
@@ -104,8 +114,13 @@ function Note(){
 
   return (
     <td>
-    <button onClick = {()=>setShow(true)} ><img className = "NoteButton" src="src/images/speechbubble.png" alt="speech bubble" /></button>
-    {show?  <><textarea value = {note} onChange={addNote} onBlur={()=>setShow(false)}/> <button onClick={()=>setShow(false)}>X</button> </> : <></>}
+      <button onClick = {()=>{show?setShow(false):setShow(true)}} onMouseEnter={()=>{setShowPreview(true)}} onMouseLeave={()=>{setShowPreview(false)}} >
+        <img className = "NoteButton" src="src/images/speechbubble.png" alt="speech bubble" />
+      </button>
+      {showPreview? <p className= 'previewNote'>{note}</p>:<></> }
+      {show?  <><textarea value = {note} onChange={addNote} />
+            <button onClick={()=>setShow(false)}>X</button> </> 
+        : <></>}
     </td>
   );
 }
@@ -122,7 +137,8 @@ function EditButton({transactionData, transactions, setTransactions}){
             description: event.target.descriptioninput.value,
             category: event.target.categoryinput.value,
             amount: event.target.amountinput.value,
-            id: transaction.id
+            type: event.target.transactionType.value,
+            id: transaction.id//id should stay the same
           }
           return NewTransaction;
         }
@@ -146,8 +162,13 @@ function EditButton({transactionData, transactions, setTransactions}){
         <input id = 'categoryinput' type='text' required />
       <label htmlFor = "amountinput">Amount: </label>
         <input id ="amountinput" type="number" required />
+        <input type = 'radio' value = 'expense' name = 'transactionType' require/>
+        <label htmlFor="transactionType">expense </label>
+        <input type = 'radio' value = 'income' name = 'transactionType' require/>
+        <label htmlFor="transactionType">income </label>
         <div className = "TransactionBtn">
         <button type = "button" onClick = {()=>setShowForm(false)}>Cancel</button>
+        <button type = "reset"> Reset</button>
         <input type="submit" value = "Save" />
         </div>
       </form>
@@ -172,9 +193,11 @@ function TableContent({transactions, setTransactions }){
           <tr id = "headerRow">
             <th className = "tableHeader">Edit</th>
             <th className = "tableHeader">Date</th>
+            <th className = 'tableHeader'>Type</th>
             <th className = "tableHeader">Description</th>
             <th className = "tableHeader">Category</th>
             <th className = "tableHeader">Amount</th>
+            <th className = "tableHeader">Notes</th>
           </tr>
         </thead>
 
@@ -184,14 +207,15 @@ function TableContent({transactions, setTransactions }){
               return(
                 <>
                 <tr className = "inputRow" key = {transactionData.id}>
-                  <td>
+                  <td className = "tableData">
                   <RemoveButton transactionData = {transactionData} transactions = {transactions} setTransactions = {setTransactions}/>
                   <EditButton transactionData = {transactionData} transactions = {transactions} setTransactions = {setTransactions}/>
                   </td>
                   <td className = "tableData">{transactionData.date} </td>
+                  <td className = "tableData">{transactionData.type} </td>
                   <td className = "tableData">{transactionData.description} </td>
                   <td className = "tableData">{transactionData.category}</td>
-                  <td className = "tableData">{transactionData.amount}</td>
+                  <td className = "tableData">{(transactionData.amount>0)?('+'+transactionData.amount):(transactionData.amount)}</td>
                   <Note/>
                   <td className="tableData">Key:{transactionData.id}</td> {/* Display the key for debugging purorses*/}
                 </tr>
@@ -220,10 +244,4 @@ export default function App() {
   );
 }
 
-/*
-now that we use uuid for unique id and keys we can add a note value to the transacitons objects
-we can add note by using hte unique id and changing the array
-we remove unique array elements by filtering out the id that should be removed.
-we can edit my using the unique id
 
-*/

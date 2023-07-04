@@ -94,3 +94,6 @@ body{
 .NoteButton{
   width:70px;
 }
+.previewNote{
+  display:inline;
+}
