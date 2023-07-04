@@ -3,18 +3,34 @@ import {useState} from 'react'
 import{v4 as uuidv4} from 'uuid'
 import HeaderToolbar from './HeaderToolbar'
 
-function TotalInfo(){
-  let totalBalance = 1000000;
-  let totalSpent = 234039;
+function TotalInfo({transactions}){
+  //const [totals, setTotals] = useState({balance:0, expense:0});
+
+  let size= transactions.length;
+
+  let totalBalance = 0;
+  for(let i = 0; i<size; i++){
+    totalBalance+=transactions[i].amount;
+  }
+  //setTotals({balance:totalBalance, ...totals});
+  
+  let totalExpense = 0;
+  for(let i =0; i<size; i++){
+    if(transactions[i].amount<0){
+      totalExpense+=transactions[i].amount;
+    }
+  }
+ // setTotals({...totals, expense:totalExpense});
+
   return(
   <div className = "TotalInfo">
     <div id = "balance">
       <p>Total Balance:</p>
       ${totalBalance}
     </div>
-    <div id = 'spending'>
-      <p>Total Spending:</p>
-      -${totalSpent}
+    <div id = 'expense'>
+      <p>Total Expense:</p>
+      -${totalExpense}
     </div>
   </div>);
 }
@@ -26,7 +42,7 @@ function BudgetTracker(){
 
   return (
     <>
-    <TotalInfo />
+    <TotalInfo transactions = {transactions}/>
     <HeaderToolbar />
     <Form transactions = {transactions} setTransactions = {setTransactions}/>
     <TableContent transactions = {transactions} setTransactions = {setTransactions}/>
