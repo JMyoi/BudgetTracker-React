@@ -1,4 +1,4 @@
-This is an application that lets you track your income and expenses to allow you to analyze your flow of cash.
+This is an application that lets you track your income and expenses to allow you to analyze your flow of cash.<br>
 Features
 <ul>
     <li>add transactions</li>
