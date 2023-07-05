@@ -85,10 +85,14 @@ const[Open, setOpen] = useState(false);
           <input id = 'categoryInput' type='text' required placeholder = 'ex.groceries'/>
         <label htmlFor = "amountInput">Amount: </label>
           <input id ="amountInput" type="number" required />
-          <input type = 'radio' value = 'expense' name = 'transactionType'/>{/*radio group must share the same name attribute so that when one is selected the others are unselected. You also refer to the name to get the selected value*/}
+
+
+          <input type = 'radio' value = 'expense' name = 'transactionType'required/>{/*radio group must share the same name attribute so that when one is selected the others are unselected. You also refer to the name to get the selected value*/}
         <label htmlFor="transactionType">expense </label>
-        <input type = 'radio' value = 'income' name = 'transactionType'/>
+          <input type = 'radio' value = 'income' name = 'transactionType' required/>
         <label htmlFor="transactionType">income </label>
+
+
           <div className = "TransactionBtn">
           <button type = "button" onClick = {()=>setOpen(false)}>Cancel</button>
           <button type = "reset"> Reset</button>
@@ -145,14 +149,18 @@ function EditButton({transactionData, transactions, setTransactions}){
   const[showForm, setShowForm]= useState(false);
 
   function handleEditSubmit(event){
+    event.preventDefault();
+    let amt = (event.target.transactionType.value==="expense")? (-event.target.amountinput.value) : (+event.target.amountinput.value) ;
+
     setTransactions(transactions.map(
       transaction=>{
         if(transaction.id===transactionData.id){
+          //if the transsaction is the one we want to edit then we will edit it if its not then we just push all the other transactions into the array
           const NewTransaction = {
             date: event.target.dateinput.value,
             description: event.target.descriptioninput.value,
             category: event.target.categoryinput.value,
-            amount: event.target.amountinput.value,
+            amount: amt,
             type: event.target.transactionType.value,
             id: transaction.id//id should stay the same
           }
@@ -167,7 +175,7 @@ function EditButton({transactionData, transactions, setTransactions}){
   }
 
 
-  function FormCondition(){
+  function Show(){
     return(
       <form className = "AddTransactionForm" onSubmit = {handleEditSubmit} >
       <label htmlFor ="dateinput" >Date: </label>
@@ -178,10 +186,12 @@ function EditButton({transactionData, transactions, setTransactions}){
         <input id = 'categoryinput' type='text' required />
       <label htmlFor = "amountinput">Amount: </label>
         <input id ="amountinput" type="number" required />
-        <input type = 'radio' value = 'expense' name = 'transactionType' require/>
+
+        <input type = 'radio' value = 'expense' name = 'transactionType'required/>
         <label htmlFor="transactionType">expense </label>
-        <input type = 'radio' value = 'income' name = 'transactionType' require/>
+          <input type = 'radio' value = 'income' name = 'transactionType' required/>
         <label htmlFor="transactionType">income </label>
+
         <div className = "TransactionBtn">
         <button type = "button" onClick = {()=>setShowForm(false)}>Cancel</button>
         <button type = "reset"> Reset</button>
@@ -194,7 +204,7 @@ function EditButton({transactionData, transactions, setTransactions}){
   return(
     <>
     <button onClick = {()=>setShowForm(true)}>Edit</button>
-    {showForm && <FormCondition/>}
+    {showForm && <Show/>}
     </>
   );
 }
@@ -233,7 +243,7 @@ function TableContent({transactions, setTransactions }){
                   <td className = "tableData">{transactionData.category}</td>
                   <td className = "tableData">{(transactionData.amount>0)?('+'+transactionData.amount):(transactionData.amount)}</td>
                   <Note/>
-                  <td className="tableData">Key:{transactionData.id}</td> {/* Display the key for debugging purorses*/}
+                   {/* <td className="tableData">Key:{transactionData.id}</td> {//Display the key for debugging purorses}  */}
                 </tr>
                 </>
                 )
