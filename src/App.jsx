@@ -263,10 +263,17 @@ function TableContent({transactions, setTransactions }){
 
 
 export default function App() {
+ 
+  //this state holds an array of objects with transaction, data, and amount keys.
+  const[transactions, setTransactions] = useState([]); 
+
   return (
-    <div id='Page'>
-    <BudgetTracker/>
+    <div id = 'page'>
+    <TotalInfo transactions = {transactions}/>
+    <HeaderToolbar />
+    <Form transactions = {transactions} setTransactions = {setTransactions}/>
+    <TableContent transactions = {transactions} setTransactions = {setTransactions}/>
     </div>
-  );
+  )
 }
 
