@@ -1,66 +1,99 @@
 body{
-  display:flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: beige;
-}
-.budget-tracker {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
   background-color: antiquewhite;
 }
-
-form {
-  display: flex;
+#Page{
+  display:flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  align-items: center;
+}
+.AddTransactionForm{
+  border: 3px solid black;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  width:250px;
+  height:auto;
+  background-color: white;
+}
+#TableContent{
+  border: 2px solid black;
+  width:auto; 
+  margin: 20px 20px;
+  background-color: white;
+
+}
+.tableHeader{
+  border:1px solid black;
+  padding: 10px 10px;
+}
+.tableData{
+  text-align: center;
+  border:1px solid black;
+  padding: 10px 10px;
 }
 
-label {
-  margin-bottom: 10px;
+
+
+.TotalInfo{
+  display:flex;
+
+}
+#balance{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid black;
+  padding: 10px 10px;
+  margin: 10px 10px;
+}
+#expense{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: 1px solid black;
+  padding: 10px 10px;
+  margin: 10px 10px;
+  
 }
 
-input{
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
+#HeaderToolbar{
+  background-color: beige;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width:100%;
+  height:80px;
+  
 }
-
-button {
-  padding: 8px 12px;
-  background-color: #007bff;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+#Filter:hover{
+  background-color:blanchedalmond;
 }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+#Sort:hover{
+  background-color: blanchedalmond;
+  
 }
-
-th,
-td {
-  padding: 8px;
-  text-align: left;
+#Display:hover{
+  background-color: blanchedalmond;
 }
-
-th {
-  background-color: #007bff;
-  color: #fff;
+.TransactionBtn{
+  margin: 10px 10px;
 }
-
-.remove-button {
-  padding: 5px 10px;
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.AddTransactionBtn{
+  font-size: 20px;
+  border-radius: 12px;
+  margin:20px 0px 0px 0px;
+}
+.AddTransactionBtn:hover{
+  background-color:aquamarine;
+}
+.editBtns{
+  display:flex;
+  flex-direction:column;
+}
+.NoteButton{
+  width:70px;
+}
+.previewNote{
+  display:inline;
 }

@@ -1,0 +1,5 @@
+{/*this button removes only that transaction by comparing index*/}
+                  <td className = "editBtns">
+                      <button type = "button" onClick = {()=>(setTransactions(transactions.filter((transaction, index) => index !== i)))} >Remove
+                     </button>
+                  </td> 
