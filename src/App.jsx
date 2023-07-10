@@ -1,7 +1,9 @@
 import './App.css'
 import {useState} from 'react'
 import{v4 as uuidv4} from 'uuid'
+import { Outlet } from "react-router-dom";
 import HeaderToolbar from './HeaderToolbar'
+
 
 function TotalInfo({transactions}){
   //const [totals, setTotals] = useState({balance:0, expense:0});
@@ -34,22 +36,6 @@ function TotalInfo({transactions}){
     </div>
   </div>);
 }
-
-
-function BudgetTracker(){
-   //this state holds an array of objects with transaction, data, and amount keys.
-  const[transactions, setTransactions] = useState([]); 
-
-  return (
-    <>
-    <TotalInfo transactions = {transactions}/>
-    <HeaderToolbar />
-    <Form transactions = {transactions} setTransactions = {setTransactions}/>
-    <TableContent transactions = {transactions} setTransactions = {setTransactions}/>
-    </>
-  )
-}
- 
 
 function Form({transactions, setTransactions }){
 
@@ -254,6 +240,7 @@ function TableContent({transactions, setTransactions }){
         </tbody>
       </table>  
     </div>
+    <Outlet />
     </>
   )
 }
@@ -270,7 +257,7 @@ export default function App() {
   return (
     <div id = 'page'>
     <TotalInfo transactions = {transactions}/>
-    <HeaderToolbar />
+    <HeaderToolbar transactions = {transactions} setTransactions = {setTransactions} />
     <Form transactions = {transactions} setTransactions = {setTransactions}/>
     <TableContent transactions = {transactions} setTransactions = {setTransactions}/>
     </div>
