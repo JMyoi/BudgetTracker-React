@@ -41,21 +41,29 @@ function Form({transactions, setTransactions }){
 
 const[Open, setOpen] = useState(false);
 
-  function handleSubmit(e){
+  async function handleSubmit(e){
     e.preventDefault();
     //determine if the amount should be negative(expense) or positive(income)
     let amt = (e.target.transactionType.value==="expense")? (-e.target.amountInput.value) : (+e.target.amountInput.value) ;
-    setTransactions(
-        [{
-          date: e.target.dateInput.value,
-          description: e.target.descriptionInput.value,
-          category: e.target.categoryInput.value,
-          amount: amt,
-          type: e.target.transactionType.value,
-          id: uuidv4()//gives a unique id for all transactions by using the uuid
-        }, ...transactions]
-        //form.reset(); if you want the form to reset.
-      );
+    
+    const newTransaction = {
+      date: e.target.dateInput.value,
+      description: e.target.descriptionInput.value,
+      category: e.target.categoryInput.value,
+      amount: amt,
+      type: e.target.transactionType.value,
+      id: uuidv4()//gives a unique id for all transactions by using the uuid
+    }
+
+    const response = await fetch("http://localhost:3000/transactions",{
+      method:"Post",
+      headers:{
+        "Content-type":"application/json",
+      },
+      body:JSON.stringify(newTransaction),
+    });
+    const savedTransaction = await response.json();
+    setTransactions([savedTransaction, ...transactions]);
 
     } 
 
