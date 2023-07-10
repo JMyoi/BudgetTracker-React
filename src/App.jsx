@@ -1,5 +1,5 @@
 import './App.css'
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import{v4 as uuidv4} from 'uuid'
 import { Outlet } from "react-router-dom";
 import HeaderToolbar from './HeaderToolbar'
@@ -197,6 +197,7 @@ function EditButton({transactionData, transactions, setTransactions}){
 
 function TableContent({transactions, setTransactions }){
 
+  
   return (
     <>
     <div>
@@ -253,6 +254,17 @@ export default function App() {
  
   //this state holds an array of objects with transaction, data, and amount keys.
   const[transactions, setTransactions] = useState([]); 
+
+  useEffect(()=>{
+      async function fetchTransactions(){
+        const response = await fetch('http://localhost:3000/transactions');
+        const transactionsFromDB = await response.json();
+        setTransactions(transactionsFromDB);
+      }
+      fetchTransactions();
+  },[])
+  
+ 
 
   return (
     <div id = 'page'>

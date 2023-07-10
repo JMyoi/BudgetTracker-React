@@ -30,7 +30,6 @@ function FilterBy({transactions, setTransactions }){
     function handleSort(event){
         setSortType(event.target.value);
     }
-    //sort by date in descending order
 
     return(
         <div id = "Sort" >
@@ -43,7 +42,8 @@ function FilterBy({transactions, setTransactions }){
                     </select>
             </form>
             <p>Selected: {SortType===''?'Nothing':SortType} </p>
-            {transactions.map(
+
+            {/* {transactions.map(
             (transactionData)=>{
               return(
                 <>
@@ -53,13 +53,13 @@ function FilterBy({transactions, setTransactions }){
                   <td className = "tableData">{transactionData.description} </td>
                   <td className = "tableData">{transactionData.category}</td>
                   <td className = "tableData">{(transactionData.amount>0)?('+'+transactionData.amount):(transactionData.amount)}</td>
-                   {/* <td className="tableData">Key:{transactionData.id}</td> {//Display the key for debugging purorses}  */}
+                   <td className="tableData">Key:{transactionData.id}</td> //Display the key for debugging purorses
                 </tr>
                 </>
                 )
               }
             )
-          }
+          } */}
         </div>
     );
   }
@@ -75,11 +75,11 @@ function FilterBy({transactions, setTransactions }){
         <div id = 'Display'>
             <form>
                 <label htmlFor="DisplayMode">Display mode:</label>
-                <select id = 'DisplayMode' defaultValue = "Table" onChange = {handleDisplay}>
+                {/* <select id = 'DisplayMode' defaultValue = "Table" onChange = {handleDisplay}>
                     <option value="Table">Table</option>
                     <option value="Graph">Graph</option>
                     <option value="Both">Both</option>
-                </select>
+                </select> */}
            </form>
            <Link to = {`/Graph`}>Graph & Table</Link>
         <p>Selected: {DisplayType}</p>
